@@ -8,7 +8,6 @@ LATEST = "13-09-2024"
 WB_PATH = "excel/" + LATEST + ".xlsx"
 
 def calculate_probabilities(input, results, keyword):
-    print("num_results: ", len(results))
     probabilities = np.zeros_like(input)
     for i in range(len(results)):
         result = np.array(results[i, keyword])
