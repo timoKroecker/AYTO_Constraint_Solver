@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 import workbook_interface as workbook
 import printer
@@ -24,9 +23,6 @@ def main():
     results, keyword = solve(input_matrix, matching_nights, lights)
     probabilities = calculate_probabilities(input_matrix, results, keyword)
     workbook.write_probabilities(WB_PATH, probabilities)
-
-    plt.imshow(probabilities)
-    plt.show()
 
 if __name__ == "__main__":
     main()
