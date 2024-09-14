@@ -1,13 +1,26 @@
-from minizinc import Instance, Model, Solver
+import minizinc
+import time
 
-def solve(input):
-    are_you_the_one = Model("./are_you_the_one.mzn")
-    gecode = Solver.lookup("gecode")
-    instance = Instance(gecode, are_you_the_one)
-    instance["num_girls"] = len(input)
-    instance["num_boys"] = len(input[0])
-    instance["input"] = input
+import printer
 
-    result = instance.solve()
-    for row in result["solution"]:
-        print(row)
+def solve(input_matrix, matching_nights, lights):
+    # my_driver = minizinc.find_driver(PATH)
+    # my_driver.make_default()
+    are_you_the_one = minizinc.Model("./are_you_the_one.mzn")
+    gecode = minizinc.Solver.lookup("gecode")
+    instance = minizinc.Instance(gecode, are_you_the_one)
+
+    instance["num_girls"] = len(input_matrix)
+    instance["num_boys"] = len(input_matrix[0])
+    instance["num_matching_nights"] = len(matching_nights)
+    instance["num_couples"] = len(matching_nights[0])
+
+    instance["input"] = input_matrix
+    instance["nights_and_couples"] = matching_nights
+    instance["lights"] = lights
+
+    pre_mzn = time.localtime(time.time())
+    results = instance.solve(all_solutions=True)
+    post_mzn = time.localtime(time.time())
+    printer.solver_stats(results, pre_mzn, post_mzn)
+    return results, "matches"

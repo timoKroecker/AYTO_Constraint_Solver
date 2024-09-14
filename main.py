@@ -1,34 +1,32 @@
-import openpyxl
+import numpy as np
+import matplotlib.pyplot as plt
 
+import workbook_interface as workbook
+import printer
 from minizinc_interface import solve
 
-WB_PATH = "excel/13-09-2024.xlsx"
+LATEST = "13-09-2024"
+WB_PATH = "excel/" + LATEST + ".xlsx"
 
-RED = "FF0000"
-GREEN = "00A933"
-WHITE = "000000"
+def calculate_probabilities(input, results, keyword):
+    print("num_results: ", len(results))
+    probabilities = np.zeros_like(input)
+    for i in range(len(results)):
+        result = np.array(results[i, keyword])
+        probabilities += result
+    probabilities = probabilities.astype(float) / float(len(results))
+    return probabilities
 
-def load_worksheet(path, sheet_name):
-    return openpyxl.load_workbook(path)[sheet_name]
+def main():
+    printer.header()
+    input_matrix, matching_nights, lights = workbook.load_input(WB_PATH)
+    printer.input_stats(input_matrix)
+    results, keyword = solve(input_matrix, matching_nights, lights)
+    probabilities = calculate_probabilities(input_matrix, results, keyword)
+    workbook.write_probabilities(WB_PATH, probabilities)
 
-def load_input_matrix(path):
-    map_ = {
-    RED: -1,
-    GREEN: 1,
-    WHITE: 0
-    }
-    sheet = load_worksheet(WB_PATH, "Input")
-    input_matrix = []
-    for i in range(11):
-        row = []
-        girl = str(i + 2)
-        for j in range(10):
-            boy = chr(j + 98)
-            hex_color = sheet[boy + girl].fill.fgColor.index[2:]
-            row.append(map_[hex_color])
-        input_matrix.append(row)
-    return input_matrix
+    plt.imshow(probabilities)
+    plt.show()
 
 if __name__ == "__main__":
-    input_matrix = load_input_matrix(WB_PATH)
-    solve(input_matrix)
+    main()
