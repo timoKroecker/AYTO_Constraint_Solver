@@ -4,24 +4,27 @@ import workbook_interface as workbook
 import printer
 from minizinc_interface import solve
 
-LATEST = "13-09-2024"
-WB_PATH = "excel/" + LATEST + ".xlsx"
+EXCEL_DIR = "excel/"
+
+def get_wb_path(season, night):
+    return EXCEL_DIR + "season " + str(season) + "/" + str(night) + "_nights.xlsx"
 
 def calculate_probabilities(input, results, keyword):
     probabilities = np.zeros_like(input)
     for i in range(len(results)):
-        result = np.array(results[i, keyword])
-        probabilities += result
+        probabilities += results[i, keyword]
     probabilities = probabilities.astype(float) / float(len(results))
     return probabilities
 
 def main():
     printer.header()
-    input_matrix, matching_nights, lights = workbook.load_input(WB_PATH)
+    season, night = printer.init()
+    wb_path = get_wb_path(season, night)
+    input_matrix, matching_nights, lights = workbook.load_input(wb_path)
     printer.input_stats(input_matrix)
     results, keyword = solve(input_matrix, matching_nights, lights)
     probabilities = calculate_probabilities(input_matrix, results, keyword)
-    workbook.write_probabilities(WB_PATH, probabilities)
+    workbook.write_probabilities(wb_path, probabilities)
 
 if __name__ == "__main__":
     main()

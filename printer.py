@@ -12,14 +12,19 @@ def header():
                                     
       
 """)
+    
+def init():
+    print("")
+    season = input("Please enter season: ")
+    night = input("Please enter matching night: ")
+    print("")
+    return season, night
 
 def solver_stats(results, pre_mzn, post_mzn):
-    print("")
     print("num solutions: ", len(results))
-    print(get_duration_string(pre_mzn, post_mzn))
+    print("minizinc runtime: ", get_duration_string(pre_mzn, post_mzn))
 
 def input_stats(input):
-    print("")
     print("Number of unknown values: ", get_num_zeros(input))
 
 def get_num_zeros(matrix):
