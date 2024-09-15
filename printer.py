@@ -10,15 +10,14 @@ def header():
  ___/ / /_/ / /__| |/ / /___/ _, _/ 
 /____/\____/_____/___/_____/_/ |_|  
                                     
-      
 """)
     
 def init():
-    print("")
+    country = input("Please enter country: ")
     season = input("Please enter season: ")
     night = input("Please enter matching night: ")
     print("")
-    return season, night
+    return country, season, night
 
 def solver_stats(results, pre_mzn, post_mzn):
     print("num solutions: ", len(results))

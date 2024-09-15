@@ -6,8 +6,8 @@ from minizinc_interface import solve
 
 EXCEL_DIR = "excel/"
 
-def get_wb_path(season, night):
-    return EXCEL_DIR + "season " + str(season) + "/" + str(night) + "_nights.xlsx"
+def get_wb_path(country, season, night):
+    return EXCEL_DIR + country +  "/season " + str(season) + "/night_" + str(night) + ".xlsx"
 
 def calculate_probabilities(input, results, keyword):
     probabilities = np.zeros_like(input)
@@ -18,8 +18,8 @@ def calculate_probabilities(input, results, keyword):
 
 def main():
     printer.header()
-    season, night = printer.init()
-    wb_path = get_wb_path(season, night)
+    country, season, night = printer.init()
+    wb_path = get_wb_path(country, season, night)
     input_matrix, matching_nights, lights = workbook.load_input(wb_path)
     printer.input_stats(input_matrix)
     results, keyword = solve(input_matrix, matching_nights, lights)
