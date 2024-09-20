@@ -71,9 +71,14 @@ def load_input(path):
             boy_name = sheet[chr(i) + str(night)].value.replace(" ", "")
             row.append([girls[girl_name], boys[boy_name]])
         matching_nights.append(row)
-    
 
-    return input_matrix, matching_nights, lights
+    third_wheel = sheet["b15"].value
+    if(third_wheel is None):
+        third_wheel = -1
+    else:
+        third_wheel = girls[third_wheel]
+
+    return input_matrix, matching_nights, lights, third_wheel
 
 def hex_to_rgb(hex_color):
     return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))

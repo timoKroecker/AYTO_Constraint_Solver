@@ -20,9 +20,9 @@ def main():
     printer.header()
     country, season, night = printer.init()
     wb_path = get_wb_path(country, season, night)
-    input_matrix, matching_nights, lights = workbook.load_input(wb_path)
+    input_matrix, matching_nights, lights, third_wheel = workbook.load_input(wb_path)
     printer.input_stats(input_matrix)
-    results, keyword = solve(input_matrix, matching_nights, lights)
+    results, keyword = solve(input_matrix, matching_nights, lights, third_wheel)
     probabilities = calculate_probabilities(input_matrix, results, keyword)
     workbook.write_probabilities(wb_path, probabilities)
 

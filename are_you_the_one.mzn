@@ -15,6 +15,7 @@ set of int: COUPLES = 1..num_couples;
 array[GIRLS, BOYS] of int: input;
 array[NIGHTS, COUPLES, 1..2] of int: nights_and_couples;
 array[NIGHTS] of int: lights;
+int: third_wheel;
 
 %--------------------------------------------------------------------------------
 %-----------------------------------variables------------------------------------
@@ -55,4 +56,15 @@ constraint
 constraint
     forall(n in NIGHTS)(
         sum(c in COUPLES)(matches[nights_and_couples[n, c, 1], nights_and_couples[n, c, 2]]) = lights[n]
+    );
+
+%--------------------------------------------------------------------------------
+%--------------------------------threeway couple---------------------------------
+%--------------------------------------------------------------------------------
+
+constraint
+    exists(boy in BOYS)(
+        third_wheel = -1 \/
+        (matches[third_wheel, boy] = 1 /\
+        sum(girl in GIRLS)(matches[girl, boy]) = 2)
     );

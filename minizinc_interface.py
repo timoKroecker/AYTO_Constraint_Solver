@@ -3,7 +3,7 @@ import time
 
 import printer
 
-def solve(input_matrix, matching_nights, lights):
+def solve(input_matrix, matching_nights, lights, third_wheel=-1):
     # my_driver = minizinc.find_driver(PATH)
     # my_driver.make_default()
     are_you_the_one = minizinc.Model("./are_you_the_one.mzn")
@@ -18,6 +18,7 @@ def solve(input_matrix, matching_nights, lights):
     instance["input"] = input_matrix
     instance["nights_and_couples"] = matching_nights
     instance["lights"] = lights
+    instance["third_wheel"] = third_wheel
 
     pre_mzn = time.localtime(time.time())
     results = instance.solve(all_solutions=True)
